@@ -161,10 +161,10 @@
 	<form class="myform-container" action="/editcustomer/{{c.CustId}}" method="post">{% csrf_token %}
             <span class="entry-box">First Name : <input type="text" name="CustFName" value="{{c.CustFName}}" placeholder="Eg: &quot;Michael&quot;"required></span>
             <span class="entry-box">Last Name : <input type="text" name="CustLName" value="{{c.CustLName}}" placeholder="Eg : &quot;Diaz&quot;"required></span>
-            <span class="entry-box">Phone Number : <input type="tel" name="CustCont" value="{{c.CustCont}}" maxlength="10" pattern="[0-9]{10}" placeholder="Eg : &quot;9876543210&quot;" required></span>
+            <span class="entry-box">Phone Number : <input type="tel" name="CustCont" value="{{c.CustCont}}" placeholder="Eg : &quot;9876543210&quot;" required></span>
             <span class="entry-box">Email Id : <input type="email" name="CustEmail" value="{{c.CustEmail}}" placeholder="Eg : &quot;someone@example.com&quot;" required></span>
             <span class="entry-box">Password : <input type="password" name="CustPass" placeholder="Eg : &quot;abCX124yZ$!&quot;" required></span>
-			<span class="entry-box">Address : <textarea type="text" rows="3" name="Address" placeholder="Eg : &quot;123, pragati college,Datta Nagar Dombivali East&quot;" maxlength="140" required></textarea></span>
+			<span class="entry-box">Address : <textarea type="text" rows="3" name="Address" placeholder="Eg : &quot;123 street, somewhere city, some country&quot;" maxlength="140" required></textarea></span>
             <center><button type="reset"class="butn" style="
             background-image: linear-gradient(190deg, rgba(183,28,28 ,1), rgba(239,154,154 ,1));" name="button"><a href="home">Cancel</a></button>
               &nbsp;&nbsp;<button type="submit" class="butn" name="button">Update</button>
