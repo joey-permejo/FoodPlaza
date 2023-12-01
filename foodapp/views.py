@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect
 from django.db import connection, transaction
 from foodapp.forms import FoodForm,CustForm,AdminForm,CartForm,OrderForm
 from foodapp.models import Food,Cust,Admin,Cart,Order
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 import datetime
+import json
 
 cursor = connection.cursor()
 
@@ -191,4 +194,19 @@ def updateQNT(request,s):
 	sql="update FP_Cart set FoodQuant='%d' where CartId='%d'"%(qt,cartId)
 	i=cursor.execute(sql)
 	transaction.commit()
- 
+
+@csrf_exempt
+def testCRUD(request, *args, **kwargs):
+	content_type = 'application/json;charset=UTF-8'
+	match request.method:
+		case "GET":
+			qs = Food.objects.all()
+			return JsonResponse({
+				"data": list(qs.values_list('FoodName', 'FoodCat', 'FoodPrice', 'FoodImage'))
+			})
+		case "POST":
+			return HttpResponse(json.dumps({"message": "Resource created!"}), content_type, status=201)
+		case "PUT":
+			return HttpResponse(json.dumps({"message": "Resource updated!"}), content_type, status=204)
+		case "DELETE":
+			return HttpResponse(json.dumps({"message": "Resource deleted!"}), content_type, status=204)

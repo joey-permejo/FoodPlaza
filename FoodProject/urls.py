@@ -58,6 +58,7 @@ urlpatterns = [
 	# ---- ORDER ---- 
 	path('placeorder',views.placeorder),
 	path('orders',views.getorder),
+	path('test/', views.testCRUD),
 ]
 if settings.DEBUG:
 	urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
