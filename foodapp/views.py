@@ -164,29 +164,55 @@ def changepass(request):
 			return render(request,'updatepasswd.html',{'failure':'Invalid attempt.'})
 
 def placeorder(request):
-        if request.method=="POST":
-                price=request.POST.getlist('FoodPrice','')
-                q=request.POST.getlist('FoodQuant','')
-                total=0.0
-                for i in range(len(price)):
-                    total=total+float(price[i])*float(q[i])
-                today = datetime.datetime.now()
-                sql = 'insert into FP_Order(CustEmail,OrderDate,TotalBill) values ("%s","%s","%f")' %(request.session['CustId'],today,total)
-                i=cursor.execute(sql)
-                transaction.commit()
-                sql1= 'select * from FP_Order where CustEmail="%s" and OrderDate="%s"'%(request.session['CustId'],today)
-                sql = 'delete from FP_Cart where CustEmail="%s"' %(request.session['CustId'])
-                i=cursor.execute(sql)
-                transaction.commit()
-                
-                od=Order()
-                
-                for o in Order.objects.raw(sql1):
-                        if o.CustEmail==request.session['CustId']:
-                                od=str(o.OrderId)
-                                return render(request,'index.html',{'success':'Order placed sucessfully!!!'+str(o.OrderId)})
-        else:
-        	pass
+		try:
+			if request.method=="POST":
+					price=request.POST.getlist('FoodPrice','')
+					q=request.POST.getlist('FoodQuant','')
+					total=0.0
+					for i in range(len(price)):
+						total=total+float(price[i])*float(q[i])
+					today = datetime.datetime.now()
+					sql = 'insert into FP_Order(CustEmail,OrderDate,TotalBill) values ("%s","%s","%f")' %(request.session['CustId'],today,total)
+					i=cursor.execute(sql)
+					transaction.commit()
+					sql1= 'select * from FP_Order where CustEmail="%s" and OrderDate="%s"'%(request.session['CustId'],today)
+					sql = 'delete from FP_Cart where CustEmail="%s"' %(request.session['CustId'])
+					i=cursor.execute(sql)
+					transaction.commit()
+					
+					od=Order()
+					
+					for o in Order.objects.raw(sql1):
+							if o.CustEmail==request.session['CustId']:
+									od=str(o.OrderId)
+									return render(request,'index.html',{'success':'Order placed sucessfully!!!'+str(o.OrderId)})
+			else:
+				pass
+		except Exception as e:
+			cursor = connection.cursor()
+			if request.method=="POST":
+					price=request.POST.getlist('FoodPrice','')
+					q=request.POST.getlist('FoodQuant','')
+					total=0.0
+					for i in range(len(price)):
+						total=total+float(price[i])*float(q[i])
+					today = datetime.datetime.now()
+					sql = 'insert into FP_Order(CustEmail,OrderDate,TotalBill) values ("%s","%s","%f")' %(request.session['CustId'],today,total)
+					i=cursor.execute(sql)
+					transaction.commit()
+					sql1= 'select * from FP_Order where CustEmail="%s" and OrderDate="%s"'%(request.session['CustId'],today)
+					sql = 'delete from FP_Cart where CustEmail="%s"' %(request.session['CustId'])
+					i=cursor.execute(sql)
+					transaction.commit()
+					
+					od=Order()
+					
+					for o in Order.objects.raw(sql1):
+							if o.CustEmail==request.session['CustId']:
+									od=str(o.OrderId)
+									return render(request,'index.html',{'success':'Order placed sucessfully!!!'+str(o.OrderId)})
+			else:
+				pass
 
 def getorder(request):
 	orders = Order.objects.filter(CustEmail=request.session['CustId'])
