@@ -121,9 +121,15 @@ def doLogout(request):
 	return render(request,'index.html',{'success':'Logged out successfully'})
 	
 def addcart(request,FoodId):
-	sql = ' Insert into FP_Cart(CustEmail,FoodId,FoodQuant) values("%s","%d","%d")'%(request.session['CustId'],FoodId,1)
-	i=cursor.execute(sql)
-	transaction.commit()
+	try:
+		sql = ' Insert into FP_Cart(CustEmail,FoodId,FoodQuant) values("%s","%d","%d")'%(request.session['CustId'],FoodId,1)
+		i=cursor.execute(sql)
+		transaction.commit()
+	except Exception as e:
+		cursor = connection.cursor()
+		sql = ' Insert into FP_Cart(CustEmail,FoodId,FoodQuant) values("%s","%d","%d")'%(request.session['CustId'],FoodId,1)
+		i=cursor.execute(sql)
+		transaction.commit()
 	return redirect('/allfood')
 	
 def delcart(request,CartId):
