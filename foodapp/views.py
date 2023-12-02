@@ -189,7 +189,7 @@ def placeorder(request):
         	pass
 
 def getorder(request):
-	orders = Order.objects.all()
+	orders = Order.objects.filter(CustEmail=request.session['CustId'])
 	return render(request,'orderlist.html',{'orderlist':orders})
 
 def updateQNT(request,s):
